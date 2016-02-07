@@ -17,8 +17,20 @@
 #   about_triangle_project_2.py
 #
 def triangle(a, b, c):
-    # DELETE 'PASS' AND WRITE THIS CODE
-    pass
+
+    # the two shorter sides together must be longer than the longest side.
+    # otherwise geometrically it makes no sense.
+    (aa, bb, cc) = sorted([a, b, c])
+    if aa + bb <= cc:
+        raise TriangleError
+
+    sides = set([a, b, c])
+    if len(sides) == 1:
+        return 'equilateral'
+    elif len(sides) == 2:
+        return 'isosceles'
+    else:
+        return 'scalene'
 
 # Error class used in part 2.  No need to change this code.
 class TriangleError(Exception):
