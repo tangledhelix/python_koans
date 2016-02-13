@@ -32,9 +32,38 @@ from runner.koan import *
 #
 # Your goal is to write the score method.
 
+def dice_triplet_cleaner(dice, n):
+    for i in range(3):
+        dice.remove(n)
+
 def score(dice):
-    # You need to write this method
-    pass
+    score = 0
+    
+    # * A set of three ones is 1000 points
+    if dice.count(1) >= 3:
+        score += 1000
+        dice_triplet_cleaner(dice, 1)
+
+    # * A set of three numbers (other than ones) is worth 100 times the
+    #   number. (e.g. three fives is 500 points).
+    for i in [2, 3, 4, 5, 6]:
+        if dice.count(i) >= 3:
+            score += i * 100
+            dice_triplet_cleaner(dice, i)
+            
+    # * A one (that is not part of a set of three) is worth 100 points.
+    # * A five (that is not part of a set of three) is worth 50 points.
+    # * Everything else is worth 0 points.
+    for i in dice[:]:
+        if i == 1:
+            score += 100
+        elif i == 5:
+            score += 50
+
+        dice.remove(i)
+    
+    return score
+    
 
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
